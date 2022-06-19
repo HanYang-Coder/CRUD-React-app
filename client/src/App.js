@@ -109,32 +109,31 @@ function App() {
     });
   };
 
-  // const getEmployees = () => {
-  //   Axios.get("http://localhost:3001/employees").then((response) => {
-  //     setEmployeeList(response.data);
-  //   });
-  // };
 
-  // const updateEmployeeWage = (id) => {
-  //   Axios.put("http://localhost:3001/update", { wage: newWage, id: id }).then(
-  //     (response) => {
-  //       setEmployeeList(
-  //         employeeList.map((val) => {
-  //           return val.id === id
-  //             ? {
-  //               id: val.id,
-  //               name: val.name,
-  //               country: val.country,
-  //               age: val.age,
-  //               position: val.position,
-  //               wage: newWage,
-  //             }
-  //             : val;
-  //         })
-  //       );
-  //     }
-  //   );
-  // };
+
+  const getCompany = () => {
+    Axios.get("http://223.25.74.82:7103/company/find").then((response) => {
+      setCompanyList(response.data);
+    });
+  };
+
+  const updateCompany = (id) => {
+    Axios.put("http://223.25.74.82:7103/update", { nameCompany: newCompany, id: id }).then(
+      (response) => {
+        setCompanyList(
+          companyList.map((val) => {
+            return val.id === id
+              ? {
+                id: val.id,
+                nameCompany: newCompany,
+                isAirline: isAirline,
+              }
+              : val;
+          })
+        );
+      }
+    );
+  };
 
   // const deleteEmployee = (id) => {
   //   Axios.delete(`http://localhost:3001/delete/${id}`).then((response) => {
@@ -267,7 +266,13 @@ function App() {
         <button onClick={addService}>Add Service</button>
       </div>
 
-
+      <input
+        type="text"
+        onChange={(event) => {
+          setFindCompany(event.target.value);
+        }}
+      />
+      <button onClick={getCompany}>Find Company</button>
     </div>
   );
 }

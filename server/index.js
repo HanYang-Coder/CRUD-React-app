@@ -6,22 +6,19 @@ const cors = require("cors");
 app.use(cors());
 app.use(express.json());
 
-const db = mysql.createConnection({
-  user: "root",
-  password: "password",
-  database: "lumitics_test",
-});
+// const db = mysql.createConnection({
+//   user: "root",
+//   password: "password",
+//   database: "lumitics_test",
+// });
 
-app.post("/create", (req, res) => {
-  const name = req.body.name;
-  const age = req.body.age;
-  const country = req.body.country;
-  const position = req.body.position;
-  const wage = req.body.wage;
+app.post("/company/create", (req, res) => {
+  const nameCompany = req.body.nameCompany;
+  const isAirline = req.body.isAirline;
 
   db.query(
-    "INSERT INTO employees (name, age, country, position, wage) VALUES (?,?,?,?,?)",
-    [name, age, country, position, wage],
+    "INSERT INTO company (nameCompany, isAirline) VALUES (?,?)",
+    [nameCompany, isAirline],
     (err, result) => {
       if (err) {
         console.log(err);
@@ -32,21 +29,25 @@ app.post("/create", (req, res) => {
   );
 });
 
-app.get("/employees", (req, res) => {
-  db.query("SELECT * FROM employees", (err, result) => {
+app.get("/company/find", (req, res) => {
+
+  // const nameCompany = req.body.findCompany;
+
+  db.query("SELECT (nameCompany) FROM company", [nameCompany], (err, result) => {
     if (err) {
       console.log(err);
     } else {
       res.send(result);
+      console.log(request.socket.remoteAddress)
     }
   });
 });
 
-app.put("/update", (req, res) => {
+app.put("/company/update", (req, res) => {
   const id = req.body.id;
   const wage = req.body.wage;
   db.query(
-    "UPDATE employees SET wage = ? WHERE id = ?",
+    "UPDATE company SET name = ? WHERE id = ?",
     [wage, id],
     (err, result) => {
       if (err) {
@@ -58,16 +59,17 @@ app.put("/update", (req, res) => {
   );
 });
 
-app.delete("/delete/:id", (req, res) => {
-  const id = req.params.id;
-  db.query("DELETE FROM employees WHERE id = ?", id, (err, result) => {
-    if (err) {
-      console.log(err);
-    } else {
-      res.send(result);
-    }
-  });
-});
+// Delete company
+// app.delete("/delete/:id", (req, res) => {
+//   const id = req.params.id;
+//   db.query("DELETE FROM company WHERE id = ?", id, (err, result) => {
+//     if (err) {
+//       console.log(err);
+//     } else {
+//       res.send(result);
+//     }
+//   });
+// });
 
 app.listen(3001, () => {
   console.log("Yey, your server is running on port 3001");
